@@ -1,20 +1,16 @@
 <template>
-  <div id="app">
-   <router-view></router-view>
-  </div>
+  <div>Login Components</div>
 </template>
 
 <script>
 export default {
-  name: 'App',
+  name: 'LoginIdex',
   data () {
-    return {
-    }
+    return {}
   },
   components: {}
 }
 </script>
 
 <style lang="less" scoped>
-
 </style>

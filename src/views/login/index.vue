@@ -22,13 +22,14 @@
           />
         </van-cell-group>
         <div class="login-btn">
-          <van-button class="btn" type="info">登录</van-button>
+          <van-button class="btn" type="info" @click.prevent="handleLogin">登录</van-button>
         </div>
       </form>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'LoginIdex',
   data () {
@@ -39,7 +40,16 @@ export default {
       }
     }
   },
-  components: {}
+  methods: {
+    async  handleLogin () {
+      const res = axios({
+        method: 'POST',
+        url: 'http://toutiao.course.itcast.cn/app/v1_0/authorizations',
+        data: this.user
+      })
+      console.log(res)
+    }
+  }
 }
 </script>
 

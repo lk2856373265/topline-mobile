@@ -44,7 +44,8 @@ export default {
     async  handleLogin () {
       try {
         const data = await login(this.user)
-        console.log(data)
+        // 通过提交mutation 更新Vuex容器中的状态
+        this.$store.commit('setUser', data)
       } catch (err) {
         console.log(err)
         console.log('登录失败')

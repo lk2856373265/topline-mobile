@@ -7,7 +7,7 @@ export const login = ({ mobile, code }) => {
   // 执行其它逻辑
   return request({
     method: 'POST',
-    url: ' /app/v1_0/authorizations',
+    url: '/app/v1_0/authorizations',
     data: {
       mobile,
       code

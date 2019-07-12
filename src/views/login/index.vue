@@ -11,6 +11,7 @@
             label="手机号"
             right-icon="question-o"
             placeholder="请输入手机号"
+            error-message="请输入手机号"
           />
 
           <van-field

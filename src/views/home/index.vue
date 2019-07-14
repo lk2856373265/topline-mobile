@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-     <van-nav-bar title="首页"/>
+     <van-nav-bar title="首页" fixed />
      <!--
        activeChannelIndex绑定当前激活的标签页，使用索引
       -->
-     <van-tabs v-model="activeChannelIndex">
+    <van-tabs class="channel-tabs" v-model="activeChannelIndex">
         <van-tab title="标签 1">
           <!-- 下拉刷新
            isLoading 用来控制下拉刷新的loading状态
@@ -35,7 +35,7 @@
         <van-tab title="标签 2">内容 2</van-tab>
         <van-tab title="标签 3">内容 3</van-tab>
         <van-tab title="标签 4">内容 4</van-tab>
-      </van-tabs>
+    </van-tabs>
   </div>
 </template>
 
@@ -72,11 +72,21 @@ export default {
       console.log('onRefresh')
       setTimeout(() => {
         this.isLoading = false
-      }, 3000)
+      }, 1000)
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+.channel-tabs {
+  margin-bottom: 100px;
+}
+.channel-tabs /deep/ .van-tabs__wrap {
+  position: fixed;
+  top: 92px;
+}
+.channel-tabs /deep/ .van-tabs__content {
+  margin-top: 100px
+}
 </style>

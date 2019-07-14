@@ -27,7 +27,11 @@
           />
         </van-cell-group>
         <div class="login-btn">
-          <van-button class="btn" type="info" @click.prevent="handleLogin">登录</van-button>
+          <van-button class="btn"
+          type="info"
+          @click.prevent="handleLogin"
+          :loading="loginLoading"
+          >登录</van-button>
         </div>
       </form>
   </div>
@@ -42,7 +46,8 @@ export default {
       user: {
         mobile: '17862066801',
         code: '246810'
-      }
+      },
+      loginLoading: false // 控制登录请求的loading状态
     }
   },
   created () {
@@ -50,21 +55,28 @@ export default {
   },
   methods: {
     async  handleLogin () {
+      this.loginLoading = true
       try {
-        this.$validator.validate().then(async valid => {
-          // 如果表单验证失败，则什么都不做
-          if (!valid) {
-            return
-          }
-          // 表单验证通过，提交表单
-          const data = await login(this.user)
-          // 通过提交mutation 更新Vuex容器中的状态
-          this.$store.commit('setUser', data)
+        const valid = await this.$validator.validate()
+        // 如果表单验证失败，则什么都不做
+        if (!valid) {
+          // 验证失败，代码终止执行，取消loading
+          this.loginLoading = false
+          return
+        }
+        // 表单验证通过，提交表单
+        const data = await login(this.user)
+        // 通过提交mutation 更新Vuex容器中的状态
+        this.$store.commit('setUser', data)
+        // 登录成功，先简单粗暴的跳转到首页，后面再处理跳转到来的页面
+        this.$router.push({
+          name: 'home'
         })
       } catch (err) {
         console.log(err)
-        console.log('登录失败')
+        this.$toast.fail('登录失败')
       }
+      this.loginLoading = false
     },
     configCustomMessage () {
       const dict = {

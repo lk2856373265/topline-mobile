@@ -45,22 +45,25 @@
           </van-pull-refresh>
         </van-tab>
     </van-tabs>
+    <!-- 频道管理组件 -->
+      <HomeChannel v-model="isChannelShow" />
   </div>
 </template>
 
 <script>
 import { getUserChannels } from '@/api/channel'
 import { getArticles } from '@/api/article'
+import HomeChannel from './components/channel'
 export default {
   name: 'HomeIdex',
+  components: {
+    HomeChannel
+  },
   data () {
     return {
       activeChannelIndex: 0,
-      list: [],
-      loading: false,
-      finished: false,
-      isLoading: false,
-      channels: [] // 存储频道列表
+      channels: [], // 存储频道列表
+      isChannelShow: false
     }
   },
   computed: {

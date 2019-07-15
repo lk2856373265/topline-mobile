@@ -98,9 +98,18 @@ export default {
     },
     // 上拉加载更多，push数据
     async onLoad () {
-      console.log('onLoad')
+      await this.$sleep(800)
       let data = []
       data = await this.loadArticles()
+      // 如果没有data.pre_timestamp并且数组是空的，意味着没有数据了
+      if (!data.pre_timestamp && !data.results.length) {
+        // 设置该频道的数据已加载完毕，组件会给猪提示并且不再onLoad
+        this.activeChannel.upPullFinished = true
+        // 取消loading
+        this.activeChannel.upPullLoading = false
+        // 代码停止执行
+        return
+      }
       // pre_timestamp下一页的页码（上次时间点推荐的数据）
       // results 文章列表
       // console.log(data)
@@ -132,7 +141,6 @@ export default {
     },
     // 下拉刷新，如果有新数据，则重置列表数据
     onRefresh () {
-      console.log('onRefresh')
       setTimeout(() => {
         this.isLoading = false
       }, 1000)

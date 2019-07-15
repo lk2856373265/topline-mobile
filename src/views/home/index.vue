@@ -5,7 +5,7 @@
        activeChannelIndex绑定当前激活的标签页，使用索引
       -->
     <van-tabs class="channel-tabs" v-model="activeChannelIndex">
-      <div slot="nav-right" class="wap-nav">
+      <div slot="nav-right" class="wap-nav" @click="isChannelShow = true">
         <van-icon name="wap-nav" />
       </div>
         <van-tab
@@ -46,7 +46,11 @@
         </van-tab>
     </van-tabs>
     <!-- 频道管理组件 -->
-      <HomeChannel v-model="isChannelShow" />
+      <HomeChannel
+      v-model="isChannelShow"
+      :channels="channels"
+      :active-index="activeChannelIndex"
+       />
   </div>
 </template>
 
@@ -63,7 +67,7 @@ export default {
     return {
       activeChannelIndex: 0,
       channels: [], // 存储频道列表
-      isChannelShow: false
+      isChannelShow: true
     }
   },
   computed: {

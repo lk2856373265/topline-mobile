@@ -68,6 +68,18 @@ export default {
       return this.channels[this.activeChannelIndex]
     }
   },
+  watch: {
+    // 监视容器中的user用户
+    async '$store.state.user' () {
+      // 重新加载用户频道列表
+      this.loadChannels()
+      // 频道数据改变，重新加载当前激活频道的数据
+      await this.onLoad()
+      this.activeChannel.upPullLoading = true
+      // this.activeChannel.upPullLoading = true
+      await this.onLoad()
+    }
+  },
   created () {
     this.loadChannels()
   },

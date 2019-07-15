@@ -23,15 +23,15 @@
             @load 加载更多时触发的一个事件
             -->
           <van-list
-              v-model="loading"
-              :finished="finished"
+              v-model="channelItem.upPullLoading"
+              :finished="channelItem.upPullFinished"
               finished-text="没有更多了"
               @load="onLoad"
             >
               <van-cell
-                v-for="item in list"
-                :key="item"
-                :title="item"
+                v-for="articleItem in channelItem.articles"
+                :key="articleItem.art_id"
+                :title="articleItem.title"
               />
           </van-list>
           </van-pull-refresh>
@@ -42,6 +42,7 @@
 
 <script>
 import { getUserChannels } from '@/api/channel'
+import { getArticles } from '@/api/article'
 export default {
   name: 'HomeIdex',
   data () {
@@ -52,6 +53,14 @@ export default {
       finished: false,
       isLoading: false,
       channels: [] // 存储频道列表
+    }
+  },
+  computed: {
+    /**
+     * 当前激活的频道
+     */
+    activeChannel () {
+      return this.channels[this.activeChannelIndex]
     }
   },
   created () {
@@ -80,6 +89,7 @@ export default {
       // 修改频道数据，使结构满足满足我们的需求
       channels.forEach(item => {
         item.articles = [] // 用来存储当前文章的列表
+        item.timestamp = Date.now() // 存储下一页数据的
         item.downPullLoading = false // 控制当前频道下拉刷新的loading状态
         item.upPullLoading = false // 控制当前频道上拉加载更多的loadin状态
         item.upPullFinished = false // 控制当前频道数据是否加载完毕
@@ -87,21 +97,38 @@ export default {
       this.channels = channels
     },
     // 上拉加载更多，push数据
-    onLoad () {
+    async onLoad () {
       console.log('onLoad')
-      // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        // 加载状态结束
-        this.loading = false
+      let data = []
+      data = await this.loadArticles()
+      // pre_timestamp下一页的页码（上次时间点推荐的数据）
+      // results 文章列表
+      // console.log(data)
+      // 解决初始化的时候没有最新推荐数据的问题（没有最新数据，就加载上一次推荐数据）
+      if (data.pre_timestamp && !data.results.length) {
+        this.activeChannel.timestamp = data.pre_timestamp
+        // 加载下一页数据
+        data = await this.loadArticles()
+      }
+      // 数据加载好以后，将 pre_timestamp 更新到当前频道的中用于加载下下页数据
+      this.activeChannel.timestamp = data.pre_timestamp
+      // 将文章数据更新到频道中（注意：是 push 追加，不是覆盖）
+      this.activeChannel.articles.push(...data.results)
+      // 数据加载完毕，取消上拉 loading
+      this.activeChannel.upPullLoading = false
+      // // 异步更新数据
+      // setTimeout(() => {
+      //   for (let i = 0; i < 10; i++) {
+      //     this.list.push(this.list.length + 1)
+      //   }
+      //   // 加载状态结束
+      //   this.loading = false
 
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 1000)
+      //   // 数据全部加载完成
+      //   if (this.list.length >= 40) {
+      //     this.finished = true
+      //   }
+      // }, 1000)
     },
     // 下拉刷新，如果有新数据，则重置列表数据
     onRefresh () {
@@ -109,6 +136,15 @@ export default {
       setTimeout(() => {
         this.isLoading = false
       }, 1000)
+    },
+    async loadArticles () {
+      const { id: channelId, timestamp } = this.activeChannel
+      const data = await getArticles({
+        channelId, // 当前激活的频道id
+        timestamp, // 用于请求分页数据的时间戳
+        withTop: 1 // 是否包含置顶数据
+      })
+      return data
     }
   }
 }

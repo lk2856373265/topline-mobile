@@ -50,6 +50,7 @@
       v-model="isChannelShow"
       :user-channels="channels"
       :active-index="activeChannelIndex"
+      @update:active-index="activeChannelIndex = $event"
        />
   </div>
 </template>

@@ -28,7 +28,7 @@
         <van-grid-item
           v-for="(item, index) in userChannels"
           :key="item.id"
-          text="文字"
+          @click="handleUserChannelClick(item, index)"
         >
         <span
         class="text"
@@ -121,6 +121,22 @@ export default {
       }
       // 如果未登录，则将数据持久化到本地存储
       window.localStorage.setItem('channels', JSON.stringify(this.userChannels))
+    },
+    changeChannel (item, index) {
+      this.$emit('update:active-index', index)
+      this.$emit('input', false)
+    },
+    deleteChannel () {
+      console.log('deleteChannel')
+    },
+    handleUserChannelClick (item, index) {
+      if (!this.isEdit) {
+        // 非编辑状态：切换频道
+        this.changeChannel(item, index)
+      } else {
+        // 编辑状态：删除频道
+        this.deleteChannel(item, index)
+      }
     }
   }
 }

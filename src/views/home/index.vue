@@ -67,7 +67,7 @@ export default {
     return {
       activeChannelIndex: 0,
       channels: [], // 存储频道列表
-      isChannelShow: true
+      isChannelShow: false
     }
   },
   computed: {

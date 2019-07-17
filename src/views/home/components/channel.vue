@@ -65,7 +65,11 @@
 </template>
 
 <script>
-import { getAllChannels, resetUserChannels } from '@/api/channel'
+import {
+  getAllChannels,
+  resetUserChannels,
+  deleteUserChannels
+} from '@/api/channel'
 import { mapState } from 'vuex'
 export default {
   name: 'HomeChannel',
@@ -139,7 +143,7 @@ export default {
       this.$emit('update:active-index', index)
       this.$emit('input', false)
     },
-    deleteChannel (item, index) {
+    async deleteChannel (item, index) {
       this.userChannels.splice(index, 1)
       // 手动设置一下当前激活的标签索引，用来触发onload调用，否则可能会看不到那个数据
       // this.$emit('update:active-index', 1)
@@ -147,6 +151,7 @@ export default {
 
       if (this.user) {
         // 发请求删除
+        await deleteUserChannels(item.id)
         return
       }
       window.localStorage.setItem('channels', JSON.stringify(this.userChannels))

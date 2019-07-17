@@ -25,3 +25,20 @@ export const getAllChannels = () => {
     url: '/app/v1_0/channels'
   })
 }
+/**
+ * 批量修改用户频道列表（重置）
+ * channels: []
+ *  {id: 频道id, seq: 顺序序号}
+ * 数据的顺序都是从2开始
+ * 因为推荐是用户默认的频道，推荐从1开始
+ */
+export const resetUserChannels = (channels) => {
+  // 执行其它逻辑
+  return request({
+    method: 'PUT',
+    url: '/app/v1_0/user/channels',
+    data: {
+      channels
+    }
+  })
+}

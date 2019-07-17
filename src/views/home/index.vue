@@ -89,6 +89,12 @@ export default {
       this.activeChannel.upPullLoading = true
       // this.activeChannel.upPullLoading = true
       await this.onLoad()
+    },
+    isChannelShow () {
+      if (!this.isChannelShow && !this.activeChannel.articles.length) {
+        console.log('onLoad')
+        this.onLoad()
+      }
     }
   },
   created () {

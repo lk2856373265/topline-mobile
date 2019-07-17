@@ -126,8 +126,17 @@ export default {
       this.$emit('update:active-index', index)
       this.$emit('input', false)
     },
-    deleteChannel () {
-      console.log('deleteChannel')
+    deleteChannel (item, index) {
+      this.userChannels.splice(index, 1)
+      // 手动设置一下当前激活的标签索引，用来触发onload调用，否则可能会看不到那个数据
+      // this.$emit('update:active-index', 1)
+      // 判断当前激活频道中是否有数据，如果没有则手动onload一下
+
+      if (this.user) {
+        // 发请求删除
+        return
+      }
+      window.localStorage.setItem('channels', JSON.stringify(this.userChannels))
     },
     handleUserChannelClick (item, index) {
       if (!this.isEdit) {

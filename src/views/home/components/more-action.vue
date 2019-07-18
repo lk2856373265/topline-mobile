@@ -6,7 +6,7 @@
   :showConfirmButton="false"
 >
   <van-cell-group v-if="!isReportShow">
-  <van-cell icon="warn-o" title="不感兴趣" />
+  <van-cell icon="warn-o" title="不感兴趣" @click="handleDislike"/>
   <van-cell is-link icon="records" title="反馈垃圾内容" @click="isReportShow = true" />
   <van-cell icon="warning-o" title="拉黑作者" />
 </van-cell-group>
@@ -32,11 +32,19 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    currentArticle: {
+      type: Object
     }
   },
   data () {
     return {
       isReportShow: false
+    }
+  },
+  methods: {
+    handleDislike () {
+      console.log(this.currentArticle)
     }
   }
 }

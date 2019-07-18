@@ -77,6 +77,7 @@
       v-model="isMoreActionShow"
       :current-article="currentArticle"
       @dislike-success="handleDislikeSuccess"
+      @add-blacklist-success="handleDislikeSuccess"
       />
        <!-- /更多操作 -->
   </div>

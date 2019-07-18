@@ -46,7 +46,7 @@
               <van-grid :border="false" :column-num="3">
                 <van-grid-item v-for="(img, index) in articleItem.cover.images" :key="index">
                   <van-image
-                  :src="img" />
+                  :src="img" lazy-load/>
                 </van-grid-item>
               </van-grid>
               </template>

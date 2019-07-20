@@ -18,9 +18,9 @@
         @load="onLoad"
       >
         <van-cell
-          v-for="item in list"
-          :key="item"
-          :title="item"
+          v-for="item in articles"
+          :key="item.art_id.toString()"
+          :title="item.title"
         />
       </van-list>
      <!-- /文章列表 -->
@@ -33,34 +33,40 @@ export default {
   name: 'SearchResult',
   data () {
     return {
-      list: [],
+      articles: [],
       loading: false,
-      finished: false
+      finished: false,
+      page: 1,
+      perPage: 20
     }
   },
-  async created () {
-    const data = await getSearchResult({
-      q: this.$route.params.q,
-      page: 2,
-      perPage: 20
-    })
-    console.log(data)
+  computed: {
+    q () {
+      return this.$route.params.q
+    }
   },
   methods: {
-    onLoad () {
-      // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        // 加载状态结束
+    async onLoad () {
+      const data = await getSearchResult({
+        page: this.page,
+        perPage: this.perPage,
+        q: this.q
+      })
+      // 如果没有数据
+      if (!data.results.length) {
+        // 取消loading
         this.loading = false
+        // 设置数据加载完毕
+        this.finished = true
 
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 500)
+        return
+      }
+      // 如果有数据，将数据push到数组中加载更多
+      this.articles.push(...data.results)
+      // 更新下一次加载更多的页码
+      this.page += 1
+      // 本次数据加载完毕，关闭loading（它每次onload的时候会自动将loadi设置为true）
+      this.loading = false
     }
   }
 }

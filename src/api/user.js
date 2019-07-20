@@ -17,16 +17,16 @@ export const login = ({ mobile, code }) => {
     }
   })
 }
-/**
- * 拉黑用户(加入黑名单)
- */
-export const addBlackList = userId => {
-  // 执行其它逻辑
-  return request({
-    method: 'POST',
-    url: '/app/v1_0/user/blacklists',
-    data: {
-      target: userId
-    }
-  })
-}
+// /**
+//  * 拉黑用户(加入黑名单)
+//  */
+// export const addBlackList = userId => {
+//   // 执行其它逻辑
+//   return request({
+//     method: 'POST',
+//     url: '/app/v1_0/user/blacklists',
+//     data: {
+//       target: userId
+//     }
+//   })
+// }

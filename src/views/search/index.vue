@@ -26,6 +26,7 @@
 
 <script>
 import { getSuggestion } from '@/api/search'
+import { debounce } from 'lodash'
 // import { constants } from 'crypto';
 export default {
   name: 'SearchIndex',
@@ -39,7 +40,7 @@ export default {
     /**
      * 监视输入数据的变化，当数据发生变化，发请求获取搜索建议，展示到列表中
      */
-    async searchText (text) {
+    searchText: debounce(async function (text) {
       // 取出首尾空格
       text = text.trim()
       // 非空判断
@@ -53,7 +54,7 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    }
+    }, 1000)
   }
 }
 </script>

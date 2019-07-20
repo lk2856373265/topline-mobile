@@ -79,6 +79,11 @@ export default {
           q: queryText
         }
       })
+      // 或者
+      // this.$router.push('/search-result' + queryText)
+
+      // 或者
+      // this.$router.push(`/search-result/${queryText}`)
     }
   }
 }

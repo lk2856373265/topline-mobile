@@ -10,13 +10,12 @@
 
     <!-- 联想建议 -->
     <van-cell-group>
-      <van-cell title="hello" icon="search" />
-      <van-cell title="hello" icon="search" />
-      <van-cell title="hello" icon="search" />
-      <van-cell title="hello" icon="search" />
-      <van-cell title="hello" icon="search" />
-      <van-cell title="hello" icon="search" />
-      <van-cell title="hello" icon="search" />
+      <van-cell
+      :title="item"
+      icon="search"
+      v-for="item in Suggestions"
+      :key="item"
+      />
     </van-cell-group>
     <!-- /联想建议 -->
 
@@ -26,14 +25,36 @@
 </template>
 
 <script>
+import { getSuggestion } from '@/api/search'
+// import { constants } from 'crypto';
 export default {
   name: 'SearchIndex',
   data () {
     return {
-      searchText: ''
+      searchText: '',
+      Suggestions: []
     }
   },
-  components: {}
+  watch: {
+    /**
+     * 监视输入数据的变化，当数据发生变化，发请求获取搜索建议，展示到列表中
+     */
+    async searchText (text) {
+      // 取出首尾空格
+      text = text.trim()
+      // 非空判断
+      if (!text.length) {
+        return
+      }
+      // 请求获取搜索建议
+      try {
+        const data = await getSuggestion(text)
+        this.Suggestions = data.options
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
 }
 </script>
 

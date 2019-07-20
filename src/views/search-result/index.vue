@@ -29,6 +29,7 @@
 
 <script>
 import { getSearchResult } from '@/api/search'
+// import { constants } from 'crypto';
 export default {
   name: 'SearchResult',
   data () {
@@ -45,8 +46,17 @@ export default {
       return this.$route.params.q
     }
   },
+  activated () {
+    console.log('activated')
+  },
+  deactivated () {
+    // console.log('deacyivated')
+    // 手动销毁当前实例，禁用缓存
+    this.$destroy()
+  },
   methods: {
     async onLoad () {
+      await this.$sleep(1000)
       const data = await getSearchResult({
         page: this.page,
         perPage: this.perPage,

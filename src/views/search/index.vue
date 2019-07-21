@@ -27,7 +27,7 @@
     <!-- /联想建议 -->
 
     <!-- 历史记录 -->
-     <van-cell-group v-else>
+     <van-cell-group v-if="searchHistories.length && !Suggestions.length">
       <van-cell title="历史记录">
         <van-icon
         v-show="!isDeleteShow"
@@ -37,16 +37,20 @@
         @click="isDeleteShow = true"
        />
        <div v-show="isDeleteShow">
-         <span style="margin-right: 10px;">全部删除</span>
+         <span style="margin-right: 10px;" @click="searchHistories = []">全部删除</span>
          <span @click="isDeleteShow = false">完成</span>
        </div>
       </van-cell>
-      <van-cell title="hello">
+      <van-cell
+      v-for="(item, index) in searchHistories"
+      :key="item"
+      :title="item">
         <van-icon
         v-show="isDeleteShow"
         slot="right-icon"
         name="close"
         style="line-height: inherit;"
+        @click="searchHistories.splice(index, 1)"
        />
       </van-cell>
     </van-cell-group>
@@ -62,9 +66,10 @@ export default {
   name: 'SearchIndex',
   data () {
     return {
-      searchText: '',
-      Suggestions: [],
-      isDeleteShow: false
+      searchText: '', // 输入的搜索文本内容
+      Suggestions: [], // 搜索联想建议数据
+      isDeleteShow: false, // 控制删除的显示状态
+      searchHistories: JSON.parse(window.localStorage.getItem('search-histories')) || [] // 存储历史搜索记录
     }
   },
   watch: {
@@ -85,7 +90,11 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    }, 1000)
+    }, 1000),
+    searchHistories () {
+      const data = JSON.stringify(this.searchHistories)
+      window.localStorage.setItem('search-histories', data)
+    }
   },
   methods: {
     highlight (text, keyword) {
@@ -96,6 +105,10 @@ export default {
       if (!queryText.length) {
         return
       }
+      // 记录搜索历史记录
+      const data = new Set(this.searchHistories)
+      data.add(queryText)
+      this.searchHistories = [...data]
       // 跳转到搜索结果页面
       this.$router.push({
         name: 'search-result',

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-     <van-nav-bar title="首页" fixed />
+     <van-nav-bar title="首页-搜索" fixed @click.native="$router.push({ name : 'search'})" />
      <!--
        activeChannelIndex绑定当前激活的标签页，使用索引
       -->

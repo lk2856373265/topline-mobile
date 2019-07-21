@@ -7,6 +7,7 @@
     v-model="searchText"
     show-action
     @search="handleSearch(searchText)"
+    @cancel="$router.back()"
     />
     </form>
     <!-- /搜索框 -->
@@ -96,6 +97,9 @@ export default {
       window.localStorage.setItem('search-histories', data)
     }
   },
+  deactivated () {
+    this.$destroy()
+  },
   methods: {
     highlight (text, keyword) {
       return text.toLowerCase().split(keyword)
@@ -105,9 +109,12 @@ export default {
       if (!queryText.length) {
         return
       }
-      // 记录搜索历史记录
+      // 记录搜索历史记录(放到顶部)
+      this.searchHistories.unshift(queryText)
+      // 数组去重
       const data = new Set(this.searchHistories)
       data.add(queryText)
+      // 将去重的结果重新赋值到数组中
       this.searchHistories = [...data]
       // 跳转到搜索结果页面
       this.$router.push({

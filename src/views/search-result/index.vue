@@ -18,10 +18,33 @@
         @load="onLoad"
       >
         <van-cell
-          v-for="item in articles"
-          :key="item.art_id.toString()"
-          :title="item.title"
-        />
+            v-for="articleItem in articles"
+            :key="articleItem.art_id.toString()"
+            :title="articleItem.title"
+          >
+        <div slot="label">
+          <template v-if="articleItem.cover.type">
+          <van-grid :border="false" :column-num="3">
+            <van-grid-item v-for="(img, index) in articleItem.cover.images" :key="index">
+              <van-image
+              :src="img" lazy-load/>
+            </van-grid-item>
+          </van-grid>
+          </template>
+          <p>
+            <span>{{ articleItem.aut_name }}</span>
+            &nbsp;
+            <span>{{ articleItem.comm_count }}评论</span>
+            &nbsp;
+            <span>{{ articleItem.pubdate | relativeTime }}</span>
+          </p>
+          <van-grid :column-num="3">
+            <van-grid-item text="评论"/>
+            <van-grid-item text="点赞"/>
+            <van-grid-item text="分享"/>
+          </van-grid>
+        </div>
+           </van-cell>
       </van-list>
      <!-- /文章列表 -->
   </div>

@@ -41,7 +41,18 @@ Vue.prototype.$sleep = time => {
     }, time)
   })
 }
-
+Vue.prototype.$isLogin = () => {
+  // 校验登录状态
+  // 如果没有登录，跳转到登录页
+  if (!store.state.user) {
+    router.push({
+      name: 'login'
+    })
+    return false
+  }
+  // 如果登录了，则执行后续操作
+  return true
+}
 new Vue({
   router,
   store,

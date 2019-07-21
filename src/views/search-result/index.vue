@@ -39,7 +39,7 @@
             <span>{{ articleItem.pubdate | relativeTime }}</span>
           </p>
           <van-grid :column-num="3">
-            <van-grid-item text="评论"/>
+            <van-grid-item @click="$isLogin()" text="评论"/>
             <van-grid-item text="点赞"/>
             <van-grid-item text="分享"/>
           </van-grid>

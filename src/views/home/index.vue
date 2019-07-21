@@ -36,7 +36,7 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell
+           <van-cell
                 v-for="articleItem in channelItem.articles"
                 :key="articleItem.art_id.toString()"
                 :title="articleItem.title"
@@ -59,7 +59,7 @@
                 <van-icon name="close" class="close" @click="handleShowMoreAction(articleItem)" />
               </p>
             </div>
-              </van-cell>
+           </van-cell>
           </van-list>
           </van-pull-refresh>
         </van-tab>

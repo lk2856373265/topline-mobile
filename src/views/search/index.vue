@@ -12,7 +12,7 @@
     <!-- /搜索框 -->
 
     <!-- 联想建议 -->
-    <van-cell-group>
+    <van-cell-group v-if="Suggestions.length && searchText.length">
       <van-cell
       :title="item"
       icon="search"
@@ -27,6 +27,29 @@
     <!-- /联想建议 -->
 
     <!-- 历史记录 -->
+     <van-cell-group v-else>
+      <van-cell title="历史记录">
+        <van-icon
+        v-show="!isDeleteShow"
+        slot="right-icon"
+        name="delete"
+        style="line-height: inherit;"
+        @click="isDeleteShow = true"
+       />
+       <div v-show="isDeleteShow">
+         <span style="margin-right: 10px;">全部删除</span>
+         <span @click="isDeleteShow = false">完成</span>
+       </div>
+      </van-cell>
+      <van-cell title="hello">
+        <van-icon
+        v-show="isDeleteShow"
+        slot="right-icon"
+        name="close"
+        style="line-height: inherit;"
+       />
+      </van-cell>
+    </van-cell-group>
     <!-- /历史记录 -->
   </div>
 </template>
@@ -40,7 +63,8 @@ export default {
   data () {
     return {
       searchText: '',
-      Suggestions: []
+      Suggestions: [],
+      isDeleteShow: false
     }
   },
   watch: {

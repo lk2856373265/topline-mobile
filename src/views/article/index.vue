@@ -15,7 +15,7 @@
       <!-- /文章标题 -->
 
       <!-- 作者信息 -->
-      <AuthInfo/>
+      <AuthInfo :article="article" />
       <!-- /作者信息 -->
 
       <!-- 文章内容 -->
@@ -46,7 +46,7 @@ export default {
         ch_id: 6,
         content: '<p>xxxxxxxxxxxxxxxxxxxxxx</p>',
         is_collected: false,
-        is_followed: false,
+        is_followed: true,
         pubdate: '2019-07-16T18:16:38',
         recomments: [],
         title: '11111111xxxxxxxxxxx'

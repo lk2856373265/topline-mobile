@@ -54,3 +54,13 @@ export const reportArticle = ({
     }
   })
 }
+/**
+ * 获取文章详情
+ */
+export const getArticleDetail = articleId => {
+  // 执行其它逻辑
+  return request({
+    method: 'GET',
+    url: `/app/v1_0/article/${articleId}`
+  })
+}

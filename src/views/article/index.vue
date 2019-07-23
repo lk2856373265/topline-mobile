@@ -11,7 +11,7 @@
 
     <div class="article">
       <!-- 文章标题 -->
-      <h2 class="article-title">hello world</h2>
+      <h2 class="article-title">{{ article.title }}</h2>
       <!-- /文章标题 -->
 
       <!-- 作者信息 -->
@@ -19,14 +19,7 @@
       <!-- /作者信息 -->
 
       <!-- 文章内容 -->
-      <div class="article-content">
-        <p>hello world</p>
-        <p>hello world</p>
-        <p>hello world</p>
-        <p>hello world</p>
-        <p>hello world</p>
-        <p>hello world</p>
-      </div>
+      <div class="article-content" v-html="article.content"></div>
       <!-- /文章内容 -->
 
       <!-- 更多操作 -->
@@ -39,14 +32,43 @@
 <script>
 import AuthInfo from './components/auth-info'
 import MoreAction from './components/more-action'
+import { getArticleDetail } from '@/api/article'
 export default {
   name: 'ArticleIndex',
   data () {
-    return {}
+    return {
+      article: {
+        art_id: 12345,
+        attitude: 0,
+        aut_id: 1,
+        aut_name: '森龙',
+        aut_photo: 'http://toutiao.meiduo.site/Fn6-mrb5zLTZIRG3yH3jG8HrURdU',
+        ch_id: 6,
+        content: '<p>xxxxxxxxxxxxxxxxxxxxxx</p>',
+        is_collected: false,
+        is_followed: false,
+        pubdate: '2019-07-16T18:16:38',
+        recomments: [],
+        title: '11111111xxxxxxxxxxx'
+      }
+    }
   },
   components: {
     AuthInfo,
     MoreAction
+  },
+  created () {
+    this.loadArticle()
+  },
+  methods: {
+    async loadArticle () {
+      try {
+        const data = await getArticleDetail(this.$router.params.articleId)
+        this.article = data
+      } catch (err) {
+        this.$toast.fail('加载失败')
+      }
+    }
   }
 }
 </script>
